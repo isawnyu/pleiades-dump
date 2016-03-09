@@ -88,28 +88,6 @@ def getTimePeriodsKeys(rec, catalog):
     except:
         return ''
 
-def getDates(rec, catalog):
-    periods = ["archaic"] #getattr(rec, 'getTimePeriods', None)
-    if periods:
-        f, t = zip(*[timePeriods[v] for v in periods])
-        return "%d,%d" % (min(f), max(t))
-    else:
-        return None
-
-def getDates2(rec, catalog):
-    """Nominal temporal range, not accounting for level of confidence"""
-    vocab = getToolByName(
-        catalog, 'portal_vocabularies'
-        ).getVocabularyByName('time-periods').getTarget()
-    ranges = periodRanges(vocab)
-    years = []
-    for tp in getattr(rec, 'getTimePeriods', []):
-        if tp:
-            years.extend(list(ranges[tp]))
-    if len(years) >= 2:
-        return "%.1f,%.1f" % (min(years), max(years))
-    else:
-        return None
 
 def geoContext(rec, catalog):
     note = rec.getModernLocation
