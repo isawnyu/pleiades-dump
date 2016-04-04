@@ -14,7 +14,7 @@ from Products.CMFCore.tests.base.security import PermissiveSecurityPolicy
 from Products.CMFCore.tests.base.security import OmnipotentUser
 from Products.CMFCore.utils import getToolByName
 from Testing.makerequest import makerequest
-import zope
+from zope.component.hooks import setSite
 
 from pleiades.geographer.geo import zgeo_geometry_centroid
 from Products.PleiadesEntity.time import periodRanges
@@ -288,6 +288,5 @@ def spoofRequest(app):
 def getSite(app):
     site = app.unrestrictedTraverse("plone")
     site.setupCurrentSkin(app.REQUEST)
-    zope.app.component.hooks.setSite(site)
+    setSite(site)
     return site
-
