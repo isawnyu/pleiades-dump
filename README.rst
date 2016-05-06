@@ -123,18 +123,11 @@ Location Columns
 
 Location tables have additional columns:
 
-avgRating: numeric
-  The average of all user ratings of the significance of this location relative
-  to its peers.
-
 geometry: string
   Geometry and coordinates in GeoJSON format
 
 featureTypes: string
   Comma-separated list of feature types such as "settlement, temple"
-
-numRatings: numeric
-  The number of user ratings (see also 'avgRating' above).
 
 pid: string
   Unique identifier for the place container within the site

@@ -103,12 +103,6 @@ def geoContext(rec, catalog):
         note = note.replace(unichr(0x2192), unichr(0x2194))
     return note
 
-def getRating(rec, catalog):
-    rid = rec.getRID()
-    # A small number of records have no metadata column, but have index data.
-    return rec.average_rating or catalog._catalog.getIndex("average_rating"
-        ).getEntryForObject(rid, default=(0.0, 0))
-
 def _abbrev(a):
     parts = [p.strip() for p in a['fullname'].split(" ", 1)]
     if len(parts) == 2 and len(parts[0]) > 2:
@@ -174,8 +168,6 @@ locations_schema.update(
     pid=lambda x, y: x.getPath().split('/')[3],
     geometry=lambda x, y: dumps(x.zgeo_geometry or None),
     featureTypes=lambda x, y: ', '.join(x.getFeatureType),
-    avgRating=lambda x, y: getRating(x, y)[0],
-    numRatings=lambda x, y: getRating(x, y)[1]
     )
 
 names_schema = common_schema.copy()
@@ -185,8 +177,6 @@ names_schema.update(
     nameLanguage=lambda x, y: x.getNameLanguage,
     nameTransliterated=lambda x, y: x.Title,
     extent=lambda x, y: dumps(x.zgeo_geometry or None),
-    avgRating=lambda x, y: getRating(x, y)[0],
-    numRatings=lambda x, y: getRating(x, y)[1]
     )
 
 places_schema = common_schema.copy()
