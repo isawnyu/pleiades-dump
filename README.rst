@@ -107,7 +107,7 @@ timePeriods: string
 timePeriodsKeys: string
   Comma-separated sequence of time periods keys such as "archaic,classical".
   These keys maybe be concatenated with the string 
-  "http://pleiades.stoa.org/vocabularies/time-periods/" to produce resolvable
+  "http://pleiades.stoa.org/time-periods/" to produce resolvable
   Pleiades URIs.
 
 timePeriodsRange: string

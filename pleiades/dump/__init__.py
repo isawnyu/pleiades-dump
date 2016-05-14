@@ -17,6 +17,7 @@ from Testing.makerequest import makerequest
 from zope.component.hooks import setSite
 
 from pleiades.geographer.geo import zgeo_geometry_centroid
+from pleiades.vocabularies.vocabularies import get_vocabulary
 from Products.PleiadesEntity.time import periodRanges
 
 log = logging.getLogger('pleiades.dump')
@@ -202,8 +203,7 @@ def getFeaturePID(b, catalog):
 def dump_catalog(context, portal_type, cschema, **extras):
     schema = cschema.copy()
     
-    vocabs = getToolByName(context, 'portal_vocabularies')
-    tp_vocab = vocabs.getVocabularyByName('time-periods').getTarget()
+    tp_vocab = get_vocabulary('time-periods')
     tp_ranges = periodRanges(tp_vocab)
 
     include_features = False
