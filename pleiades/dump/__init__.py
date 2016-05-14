@@ -203,7 +203,7 @@ def getFeaturePID(b, catalog):
 def dump_catalog(context, portal_type, cschema, **extras):
     schema = cschema.copy()
     
-    tp_vocab = get_vocabulary('time-periods')
+    tp_vocab = get_vocabulary('time_periods')
     tp_ranges = periodRanges(tp_vocab)
 
     include_features = False
