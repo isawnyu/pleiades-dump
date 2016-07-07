@@ -1,8 +1,6 @@
-
 import codecs
 import cStringIO
 import csv
-import datetime
 import logging
 import re
 import sys
@@ -11,12 +9,10 @@ from simplejson import dumps
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManager import setSecurityPolicy
 from Products.CMFCore.tests.base.security import PermissiveSecurityPolicy
-from Products.CMFCore.tests.base.security import OmnipotentUser
 from Products.CMFCore.utils import getToolByName
 from Testing.makerequest import makerequest
 from zope.component.hooks import setSite
 
-from pleiades.geographer.geo import zgeo_geometry_centroid
 from pleiades.vocabularies.vocabularies import get_vocabulary
 from Products.PleiadesEntity.time import periodRanges
 
@@ -33,6 +29,7 @@ timePeriods = {
     "mediaeval-byzantine": (641, 1453),
     "modern": (1700, 2100)
     }
+
 
 class UnicodeWriter:
     """
@@ -52,7 +49,7 @@ class UnicodeWriter:
             return s.encode('utf-8')
         except:
             return s
-        
+
     def writerow(self, row):
         self.writer.writerow([self._encode(str(s).strip()) for s in row])
         # Fetch UTF-8 output from the queue ...
@@ -69,11 +66,13 @@ class UnicodeWriter:
         for row in rows:
             self.writerow(row)
 
+
 def location_precision(rec, catalog):
     try:
-        return rec.reprPt[1] 
+        return rec.reprPt[1]
     except:
         return 'unlocated'
+
 
 def getTimePeriods(rec, catalog):
     periods = getattr(rec, 'getTimePeriods', None)
@@ -81,6 +80,7 @@ def getTimePeriods(rec, catalog):
         return ''.join(v[0].upper() for v in periods)
     except:
         return ''
+
 
 def getTimePeriodsKeys(rec, catalog):
     periods = getattr(rec, 'getTimePeriods', None)
@@ -104,32 +104,39 @@ def geoContext(rec, catalog):
         note = note.replace(unichr(0x2192), unichr(0x2194))
     return note
 
+
 def _abbrev(a):
     parts = [p.strip() for p in a['fullname'].split(" ", 1)]
     if len(parts) == 2 and len(parts[0]) > 2:
         parts[0] = parts[0][0] + "."
     return " ".join(parts)
-    
+
+
 def _userInByline(mtool, username):
-    if username == 'T. Elliott': un = 'thomase'
-    elif username == 'S. Gillies': un = 'sgillies'
-    else: un = username
+    if username == 'T. Elliott':
+        un = 'thomase'
+    elif username == 'S. Gillies':
+        un = 'sgillies'
+    else:
+        un = username
     member = mtool.getMemberById(un)
     if member:
         return {
-            "id": member.getId(), 
-            "fullname": member.getProperty('fullname') }
+            "id": member.getId(),
+            "fullname": member.getProperty('fullname'),
+        }
     else:
         return {"id": None, "fullname": un}
+
 
 def getAuthors(rec, catalog):
     """Return a listing of authors as in the Pleiades suggested citation."""
     mtool = getToolByName(catalog, 'portal_membership')
     creators = list(rec.listCreators)
-    contributors = catalog._catalog.getIndex("Contributors"
-        ).getEntryForObject(rec.getRID(), default=[])
+    contributors = catalog._catalog.getIndex("Contributors").getEntryForObject(
+        rec.getRID(), default=[])
     if "sgillies" in creators and (
-        "sgillies" in contributors or "S. Gillies" in contributors):
+            "sgillies" in contributors or "S. Gillies" in contributors):
         creators.remove("sgillies")
     authors = [
         _userInByline(mtool, name) for name in (creators + contributors)]
@@ -189,8 +196,9 @@ places_schema.update(
     hasConnectionsWith=lambda x, y: ','.join(x.hasConnectionsWith or [])
     )
 
+
 def getFeaturePID(b, catalog):
-    container =  b.getPath().split('/')[2]
+    container = b.getPath().split('/')[2]
     if container == 'places':
         return b.getPath().split('/')[3]
     feature = b.getObject()
@@ -200,9 +208,9 @@ def getFeaturePID(b, catalog):
     else:
         return '-1'
 
+
 def dump_catalog(context, portal_type, cschema, **extras):
     schema = cschema.copy()
-    
     tp_vocab = get_vocabulary('time_periods')
     tp_ranges = periodRanges(tp_vocab)
 
@@ -226,7 +234,7 @@ def dump_catalog(context, portal_type, cschema, **extras):
         if not include_features:
             query.update(
                 path={'query': '/plone/places', 'depth': 2},
-                review_state='published' )
+                review_state='published')
         query.update(kwextras)
         results = catalog(query)
     writer = UnicodeWriter(sys.stdout)
@@ -259,10 +267,12 @@ def dump_catalog(context, portal_type, cschema, **extras):
 
         writer.writerow([schema[k](b, catalog) or "" for k in keys])
 
+
 def secure(context, username):
     membership = getToolByName(context, 'portal_membership')
-    user=membership.getMemberById(username).getUser()
+    user = membership.getMemberById(username).getUser()
     newSecurityManager(None, user)
+
 
 def spoofRequest(app):
     """
@@ -270,10 +280,12 @@ def spoofRequest(app):
 
     This allows acquisition to work properly
     """
-    _policy=PermissiveSecurityPolicy()
-    _oldpolicy=setSecurityPolicy(_policy)
-    newSecurityManager(None, OmnipotentUser().__of__(app.acl_users))
+    _policy = PermissiveSecurityPolicy()
+    setSecurityPolicy(_policy)
+    user = app.acl_users.getUser('admin')
+    newSecurityManager(None, user.__of__(app.acl_users))
     return makerequest(app)
+
 
 def getSite(app):
     site = app.unrestrictedTraverse("plone")
