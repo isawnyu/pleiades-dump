@@ -288,7 +288,10 @@ def spoofRequest(app):
 
 
 def getSite(app):
-    site = app.unrestrictedTraverse("plone")
+    if 'plone' in app.objectIds():
+        site = app.unrestrictedTraverse("plone")
+    else:
+        site = app.unrestrictedTraverse("Plone")
     site.setupCurrentSkin(app.REQUEST)
     setSite(site)
     return site
