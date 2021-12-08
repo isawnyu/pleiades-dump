@@ -67,5 +67,5 @@ Place Columns
 Place tables have additional columns:
 
 featureTypes: string
-  Comma-separated list of feature types such as "settlement, temple"
+  Comma-separated list of feature type IDs such as "settlement, temple". In order to access the corresponding vocabulary terms and definitions, one may dereference these IDs by first prefixing the string "https://pleiades.stoa.org/vocabularies/place-types/" and then either (1) retrieving the corresponding HTML over the web or by looking up the resulting URI strings in http://atlantides.org/downloads/pleiades/rdf/place-types.ttl
 
