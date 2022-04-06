@@ -158,7 +158,6 @@ common_schema = dict(
     created=lambda x, y: x.created.HTML4(),
     creators=lambda x, y: ', '.join(x.listCreators),
     currentVersion=lambda x, y: x.currentVersion,
-    locationPrecision=location_precision,
     maxDate=lambda x, y: None,
     minDate=lambda x, y: None,
     modified=lambda x, y: x.modified.HTML4(),
@@ -172,6 +171,7 @@ locations_schema = common_schema.copy()
 locations_schema.update(
     featureTypes=lambda x, y: ', '.join(x.getFeatureType),
     geometry=lambda x, y: dumps(x.zgeo_geometry or None),
+    locationPrecision=location_precision,
     pid=lambda x, y: x.getPath().split('/')[3],
     reprLat=lambda x, y: None,
     reprLatLong=lambda x, y: None,
@@ -194,6 +194,7 @@ places_schema.update(
     featureTypes=lambda x, y: ', '.join(x.getFeatureType or []),
     geoContext=geoContext,
     hasConnectionsWith=lambda x, y: ','.join(x.hasConnectionsWith or [])
+    locationPrecision=location_precision,
     reprLat=lambda x, y: None,
     reprLatLong=lambda x, y: None,
     reprLong=lambda x, y: None,
