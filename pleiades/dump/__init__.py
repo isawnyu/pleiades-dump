@@ -170,6 +170,10 @@ names_schema.update(
     nameAttested=lambda x, y: x.getNameAttested or None,
     nameLanguage=lambda x, y: x.getNameLanguage,
     nameTransliterated=lambda x, y: x.Title,
+    nameType=lambda x, y: x.getNameType,
+    transcriptionAccuracy=lambda x, y: x.getAccuracy,
+    transcriptionCompleteness=lambda x, y: x.getCompleteness,
+    associationCertainty=lambda x, y: x.getAssociationCertainty,
     pid=lambda x, y: x.getPath().split('/')[3],
     )
 
