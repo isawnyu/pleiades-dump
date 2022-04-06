@@ -168,7 +168,6 @@ locations_schema.update(
 names_schema = common_schema.copy()
 names_schema.update(
     associationCertainty=lambda x, y: x.getAssociationCertainty,
-    extent=lambda x, y: dumps(x.zgeo_geometry or None),
     nameAttested=lambda x, y: x.getNameAttested or None,
     nameLanguage=lambda x, y: x.getNameLanguage,
     nameTransliterated=lambda x, y: x.Title,
