@@ -148,51 +148,51 @@ def getAuthors(rec, catalog):
     return ", ".join(authors)
 
 common_schema = dict(
+    uid=lambda x, y: x.UID,
     id=lambda x, y: x.id,
+    path=lambda x, y: x.getPath().replace('/plone', ''),
     title=lambda x, y: x.Title,
     description=lambda x, y: x.Description,
-    uid=lambda x, y: x.UID,
-    path=lambda x, y: x.getPath().replace('/plone', ''),
-    creators=lambda x, y: ', '.join(x.listCreators),
+    authors=getAuthors
+    bbox=lambda x, y: ", ".join(map(str, x.bbox or [])),
     created=lambda x, y: x.created.HTML4(),
+    creators=lambda x, y: ', '.join(x.listCreators),
+    currentVersion=lambda x, y: x.currentVersion,
+    locationPrecision=location_precision,
+    maxDate=lambda x, y: None,
+    minDate=lambda x, y: None,
     modified=lambda x, y: x.modified.HTML4(),
+    reprLat=lambda x, y: None,
+    reprLatLong=lambda x, y: None,
+    reprLong=lambda x, y: None,
+    tags=lambda x, y: ", ".join(x.Subject),
     timePeriods=getTimePeriods,
     timePeriodsKeys=getTimePeriodsKeys,
     timePeriodsRange=lambda x, y: None,
-    minDate=lambda x, y: None,
-    maxDate=lambda x, y: None,
-    locationPrecision=location_precision,
-    reprLatLong=lambda x, y: None,
-    reprLat=lambda x, y: None,
-    reprLong=lambda x, y: None,
-    bbox=lambda x, y: ", ".join(map(str, x.bbox or [])),
-    tags=lambda x, y: ", ".join(x.Subject),
-    currentVersion=lambda x, y: x.currentVersion,
-    authors=getAuthors
     )
 
 locations_schema = common_schema.copy()
 locations_schema.update(
-    pid=lambda x, y: x.getPath().split('/')[3],
-    geometry=lambda x, y: dumps(x.zgeo_geometry or None),
     featureTypes=lambda x, y: ', '.join(x.getFeatureType),
+    geometry=lambda x, y: dumps(x.zgeo_geometry or None),
+    pid=lambda x, y: x.getPath().split('/')[3],
     )
 
 names_schema = common_schema.copy()
 names_schema.update(
-    pid=lambda x, y: x.getPath().split('/')[3],
+    extent=lambda x, y: dumps(x.zgeo_geometry or None),
     nameAttested=lambda x, y: x.getNameAttested or None,
     nameLanguage=lambda x, y: x.getNameLanguage,
     nameTransliterated=lambda x, y: x.Title,
-    extent=lambda x, y: dumps(x.zgeo_geometry or None),
+    pid=lambda x, y: x.getPath().split('/')[3],
     )
 
 places_schema = common_schema.copy()
 places_schema.update(
+    connectsWith=lambda x, y: ','.join(x.connectsWith or []),
+    extent=lambda x, y: dumps(x.zgeo_geometry or None),
     featureTypes=lambda x, y: ', '.join(x.getFeatureType or []),
     geoContext=geoContext,
-    extent=lambda x, y: dumps(x.zgeo_geometry or None),
-    connectsWith=lambda x, y: ','.join(x.connectsWith or []),
     hasConnectionsWith=lambda x, y: ','.join(x.hasConnectionsWith or [])
     )
 
