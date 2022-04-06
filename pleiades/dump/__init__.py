@@ -193,7 +193,7 @@ places_schema.update(
     extent=lambda x, y: dumps(x.zgeo_geometry or None),
     featureTypes=lambda x, y: ', '.join(x.getFeatureType or []),
     geoContext=geoContext,
-    hasConnectionsWith=lambda x, y: ','.join(x.hasConnectionsWith or [])
+    hasConnectionsWith=lambda x, y: ','.join(x.hasConnectionsWith or []),
     locationPrecision=location_precision,
     reprLat=lambda x, y: None,
     reprLatLong=lambda x, y: None,
