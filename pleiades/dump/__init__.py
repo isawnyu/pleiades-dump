@@ -160,7 +160,7 @@ locations_schema.update(
     featureTypes=lambda x, y: ', '.join(x.getFeatureType),
     geometry=lambda x, y: dumps(x.zgeo_geometry or None),
     locationPrecision=location_precision,
-    locationType=lambda x, y: x.getLocationType,
+    locationTypes=lambda x, y: ', '.join(x.getLocationType),
     pid=lambda x, y: x.getPath().split('/')[3],
     reprLat=lambda x, y: None,
     reprLatLong=lambda x, y: None,
