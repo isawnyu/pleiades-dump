@@ -156,6 +156,7 @@ common_schema = dict(
 locations_schema = common_schema.copy()
 locations_schema.update(
     archaeologicalRemains=lambda x, y: x.getArchaeologicalRemains or None,
+    associationCertainty=lambda x, y: x.getAssociationCertainty,
     featureTypes=lambda x, y: ', '.join(x.getFeatureType),
     geometry=lambda x, y: dumps(x.zgeo_geometry or None),
     locationPrecision=location_precision,
