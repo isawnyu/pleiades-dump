@@ -149,7 +149,6 @@ common_schema = dict(
     minDate=lambda x, y: None,
     modified=lambda x, y: x.modified.HTML4(),
     tags=lambda x, y: ", ".join(x.Subject),
-    timePeriods=getTimePeriods,
     timePeriodsKeys=getTimePeriodsKeys,
     timePeriodsRange=lambda x, y: None,
     )
