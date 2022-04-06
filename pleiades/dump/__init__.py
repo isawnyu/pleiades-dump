@@ -18,19 +18,6 @@ from Products.PleiadesEntity.time import periodRanges
 
 log = logging.getLogger('pleiades.dump')
 
-timePeriods = {
-    "early-geometric": (-900, -850),
-    "middle-geometric": (-850, -750),
-    "archaic": (-750, -550),
-    "classical": (-550, -330),
-    "hellenistic-republican": (-330, -30),
-    "roman": (30, 300),
-    "late-antique": (300, 640),
-    "mediaeval-byzantine": (641, 1453),
-    "modern": (1700, 2100)
-    }
-
-
 class UnicodeWriter:
     """
     A CSV writer which will write rows to CSV file "f",
